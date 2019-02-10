@@ -18,7 +18,7 @@
   text-decoration: line-through;
 }
 
-.to-do-list-item.important .to-do-list-item-label {
+.important {
   font-weight: bold;
   color: steelblue;
 }

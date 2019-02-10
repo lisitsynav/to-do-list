@@ -47,6 +47,7 @@ export default class extends Component {
       };
     });
   };
+
   onTaskAdded = (text) => {
     const newTask = this.createToDoTask(text);
 
@@ -61,31 +62,37 @@ export default class extends Component {
     });
   };
 
-  onToggleImportant = (id) => {
+  toggleProperty(arr, id, propName) {
+    const idx = arr.findIndex((el) => el.id === id);
+    // Update object
+    const oldTask = arr[idx];
+    const newTask = {...oldTask, [propName]: !oldTask[propName]};
+    // Construct new Array
+    return [
+      ...arr.slice(0, idx), newTask, ...arr.slice(idx + 1)
+    ];
+  }
 
+  onToggleImportant = (id) => {
+    this.setState(({ toDoData }) => {
+      return {
+        toDoData: this.toggleProperty(toDoData, id, 'important')
+      };
+    });
   };
 
   onToggleDone = (id) => {
     this.setState(({ toDoData }) => {
-      const idx = toDoData.findIndex((el) => el.id === id);
-      // Update object
-      const oldTask = toDoData[idx];
-      const newTask = {...oldTask, done: !oldTask.done};
-      // Construct new Array
-      const newArray = [
-        ...toDoData.slice(0, idx), newTask, ...toDoData.slice(idx + 1)
-      ];
-
       return {
-        toDoData: newArray
+        toDoData: this.toggleProperty(toDoData, id, 'done')
       };
     });
   };
 
   render() {
-
-    const doneCount = this.state.toDoData.filter((el) => el.done).length;
-    const toDoCount = this.state.toDoData.length - doneCount;
+    const { toDoData } = this.state;
+    const doneCount = toDoData.filter((el) => el.done).length;
+    const toDoCount = toDoData.length - doneCount;
 
     return(
       <div className="to-do-app">
@@ -95,7 +102,7 @@ export default class extends Component {
           <ItemStatusFilter />
         </div>
         <ToDoList
-          todo={ this.state.toDoData }
+          todo={ toDoData }
           onDeleted={ this.deleteItem }
           onToggleImportant={ this.onToggleImportant }
           onToggleDone={ this.onToggleDone }/>
