@@ -4,17 +4,29 @@ import AppHeader from '../AppHeader';
 import SearchPanel from '../SearchPanel';
 import ToDoList from '../ToDoList';
 import ItemStatusFilter from '../ItemStatusFilter';
+import TaskAddForm from '../TaskAddForm';
 import './App.css';
 
 export default class extends Component {
+  maxId = 100;
+
   state = {
     toDoData: [
-      { label: 'Learn React', important: true, id: 0 },
-      { label: 'Create React App', important: true, id: 1 },
-      { label: 'Pet the cat', important: false, id: 2 },
-      { label: 'Touch the cat\'s nose', important: false, id: 3 },
-      { label: 'Have some tea', important: false, id: 4 }
+      this.createToDoTask('Learn React'),
+      this.createToDoTask('Create React App'),
+      this.createToDoTask('Pet the cat'),
+      this.createToDoTask('Touch the cat\'s nose'),
+      this.createToDoTask('Have some tea')
     ]
+  };
+
+  createToDoTask(label) {
+    return {
+      label,
+      important: false,
+      done: false,
+      id: this.maxId++
+    };
   };
 
   deleteItem = (id) => {
@@ -35,16 +47,59 @@ export default class extends Component {
       };
     });
   };
+  onTaskAdded = (text) => {
+    const newTask = this.createToDoTask(text);
+
+    // Add element in array
+    this.setState(({ toDoData }) => {
+      const newArr = [
+        ...toDoData, newTask
+      ];
+      return {
+        toDoData: newArr
+      };
+    });
+  };
+
+  onToggleImportant = (id) => {
+
+  };
+
+  onToggleDone = (id) => {
+    this.setState(({ toDoData }) => {
+      const idx = toDoData.findIndex((el) => el.id === id);
+      // Update object
+      const oldTask = toDoData[idx];
+      const newTask = {...oldTask, done: !oldTask.done};
+      // Construct new Array
+      const newArray = [
+        ...toDoData.slice(0, idx), newTask, ...toDoData.slice(idx + 1)
+      ];
+
+      return {
+        toDoData: newArray
+      };
+    });
+  };
 
   render() {
+
+    const doneCount = this.state.toDoData.filter((el) => el.done).length;
+    const toDoCount = this.state.toDoData.length - doneCount;
+
     return(
       <div className="to-do-app">
-        <AppHeader toDo={3} done={2} />
+        <AppHeader toDo={toDoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
         </div>
-        <ToDoList todo={ this.state.toDoData } onDeleted={ this.deleteItem }/>
+        <ToDoList
+          todo={ this.state.toDoData }
+          onDeleted={ this.deleteItem }
+          onToggleImportant={ this.onToggleImportant }
+          onToggleDone={ this.onToggleDone }/>
+        <TaskAddForm onTaskAdded={ this.onTaskAdded }/>
       </div>
     );
   };
