@@ -25,8 +25,8 @@ export default class TaskAddForm extends Component {
     return(
       <form className="TaskAddForm d-flex" onSubmit={this.onSubmit}>
       <input type="text" className="form-control" onChange={this.onLabelChange}
-             placeholder="Add a new task"  value={this.state.label}/>
-        <button className="btn btn-outline-secondary">+</button>
+             placeholder="Add a new task"  value={this.state.label} />
+        <button className="btn plus">+</button>
       </form>
     )
   }

@@ -1,12 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+
 .app-header {
   align-items: flex-end;
 }
 
 .app-header h1 {
   flex-grow: 1;
+  font-family: 'Indie Flower', cursive;
 }
 
 .app-header h2 {
   font-size: 1.2rem;
   color: grey;
+}
+
+span {
+  color: rgb(19, 132, 150);
 }
