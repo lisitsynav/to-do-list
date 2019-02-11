@@ -4,7 +4,7 @@
 <hr /> 
 
 *Install:*
-`npm run i`
+`npm i`
 
 *Start:*
 `npm run start`
