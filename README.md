@@ -1,10 +1,13 @@
 # To-Do list
+To-Do List Application on React.js
 
-**Install & Run**
-<hr /> 
+## Install & Run
 
-*Install:*
+### Install:
 `npm i`
 
-*Start:*
+### Start:
 `npm run start`
+
+### Build:
+`npm run build`
